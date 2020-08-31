@@ -1,0 +1,36 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: tf-gpu-test-job  
+    app.kubernetes.io/component: tf-gpu-test-job
+    app.kubernetes.io/instance: tf-gpu-test-job
+    app.kubernetes.io/name: python
+    app.kubernetes.io/part-of: manuela
+    app.openshift.io/runtime: python
+    app.openshift.io/runtime-version: "3.6"
+  name: tf-gpu-test-job
+spec:
+  failedBuildsHistoryLimit: 3
+  output:
+    to:
+      kind: ImageStreamTag
+      name: tf-gpu-test-job:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    contextDir: tf-gpu-test-job
+    git:
+      uri: https://github.com/stefan-bergstein/tensorflow-playground
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: python:3.6
+        namespace: openshift
+    type: Source
+  triggers:
+  - type: ConfigChange
+  successfulBuildsHistoryLimit: 3

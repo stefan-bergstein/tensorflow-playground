@@ -1,0 +1,9 @@
+kind: ImageStream
+apiVersion: v1
+metadata:
+  name: tf-gpu-test-job
+  labels:
+    component: tf-gpu-test-job
+spec:
+  lookupPolicy:
+    local: true
