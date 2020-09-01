@@ -1,20 +1,23 @@
-FROM registry.access.redhat.com/ubi8/python-36:latest
+FROM nvcr.io/nvidia/cuda:10.2-base-centos8
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/
+
+RUN yum install python36 -y
 
 COPY requirements.txt ./
-RUN pip install --upgrade pip
-RUN pip install --upgrade setuptools
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --upgrade pip
+RUN pip3 install --upgrade setuptools
+RUN pip3 install --no-cache-dir -r requirements.txt
 
-RUN wget https://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/cuda-repo-rhel8-10.2.89-1.x86_64.rpm
-RUN rpm -i cuda-repo-*.rpm
-RUN yum install cuda
+RUN ln -s /usr/local/cuda-10.2/targets/x86_64-linux/lib/libcudart.so.10.2 /usr/local/cuda-10.2/targets/x86_64-linux/lib/libcudart.so.10.1
+
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-10.2/targets/x86_64-linux/lib/
 
 COPY . .
 
-ENTRYPOINT ["python"] 
+ENTRYPOINT ["python3"] 
 CMD ["tf-gpu-test-job.py"]
+
 
 
 
