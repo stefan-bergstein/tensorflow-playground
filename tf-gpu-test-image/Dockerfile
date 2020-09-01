@@ -2,7 +2,7 @@ FROM nvcr.io/nvidia/cuda:10.2-base-centos8
 
 WORKDIR /usr/src/
 
-RUN yum --disableplugin=subscription-manager install python36 -y yum --disableplugin=subscription-manager clean all
+RUN yum --disableplugin=subscription-manager install python36 -y && yum --disableplugin=subscription-manager clean all
 
 COPY requirements.txt ./
 RUN pip3 install --upgrade pip
