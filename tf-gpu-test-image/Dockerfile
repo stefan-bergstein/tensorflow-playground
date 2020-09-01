@@ -1,4 +1,5 @@
-FROM registry.redhat.io/ubi8/python-36
+FROM registry.access.redhat.com/ubi8/python-36:latest
+
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./
