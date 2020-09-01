@@ -2,7 +2,7 @@ FROM nvcr.io/nvidia/cuda:10.2-base-centos8
 
 WORKDIR /usr/src/
 
-RUN yum install python36 -y
+RUN yum --disableplugin=subscription-manager install python36 -y yum --disableplugin=subscription-manager clean all
 
 COPY requirements.txt ./
 RUN pip3 install --upgrade pip
@@ -15,9 +15,10 @@ ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-10.2/targets/x86_64-linux/l
 
 COPY . .
 
+USER 1001
+
 ENTRYPOINT ["python3"] 
 CMD ["tf-gpu-test-job.py"]
-
 
 
 
