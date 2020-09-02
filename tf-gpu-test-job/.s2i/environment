@@ -1,1 +1,2 @@
+XDG_CACHE_HOME=/opt/app-root/src/.cache
 APP_FILE=tf-gpu-test-job.py
