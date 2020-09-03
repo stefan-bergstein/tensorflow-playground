@@ -32,3 +32,22 @@ oc logs -l job-name=tf-gpu-test-job
 8 - CPU:  1.41, GPU:  0.16, Factor:8
 9 - CPU:  1.33, GPU:  0.17, Factor:7
 ```
+
+# Demo multiple jobs
+
+```
+./create-tfjob.sh 
+
+* Create job 1
+job.batch/tf-gpu-test-job-1 created
+* Create job 2
+job.batch/tf-gpu-test-job-2 created
+* Create job 3
+job.batch/tf-gpu-test-job-3 created
+* Create job 4
+job.batch/tf-gpu-test-job-4 created
+* Create job 5
+job.batch/tf-gpu-test-job-5 created
+```
+
+

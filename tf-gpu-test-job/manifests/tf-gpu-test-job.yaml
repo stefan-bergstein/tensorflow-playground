@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: tf-gpu-test-job
+  name: tf-gpu-test-job-0
 spec:
   template:
     spec:
