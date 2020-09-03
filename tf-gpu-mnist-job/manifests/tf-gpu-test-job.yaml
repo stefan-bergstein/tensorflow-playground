@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tf-gpu-mnist-job-0
+spec:
+  template:
+    spec:
+      containers:
+      - name: tf-gpu-mnist-job
+        image: tf-gpu-mnist-is:latest
+        imagePullPolicy: Always
+        env:
+        # Workaround for CUDA 10.2 and Tesnorflow 2.2.0
+        - name: LD_LIBRARY_PATH
+          value: $LD_LIBRARY_PATH:/opt/app-root/lib64
+        - name: DEBUG
+          value: 'FALSE'
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+      restartPolicy: Never
+  backoffLimit: 4
