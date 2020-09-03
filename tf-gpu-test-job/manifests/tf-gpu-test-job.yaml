@@ -1,31 +1,22 @@
-apiVersion: batch/v1beta1
-kind: CronJob
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: tf-gpu-test-job
 spec:
-  concurrencyPolicy: Allow
-  failedJobsHistoryLimit: 3
-  jobTemplate:
+  template:
     spec:
-      template:
-        spec:
-          containers:
-          - name: tf-gpu-test-job
-            image: tf-gpu-test-job:latest
-            imagePullPolicy: Always
-            envFrom:
-              - secretRef:
-                  name: tf-gpu-test-job-creds
-              - configMapRef:
-                  name: tf-gpu-test-job-config
-            terminationMessagePath: /dev/termination-log
-            terminationMessagePolicy: File
-          dnsPolicy: ClusterFirst
-          restartPolicy: OnFailure
-          schedulerName: default-scheduler
-          securityContext: {}
-          terminationGracePeriodSeconds: 30
-  schedule: '0 * * * *'
-  successfulJobsHistoryLimit: 3
-  suspend: false
-
+      containers:
+      - name: tf-gpu-test-job
+        image: tf-gpu-test-job:latest
+        imagePullPolicy: Always
+        env:
+        # Workaround for CUDA 10.2 and Tesnorflow 2.2.0
+        - name: LD_LIBRARY_PATH
+          value: $LD_LIBRARY_PATH:/opt/app-root/lib64
+        - name: DEBUG
+          value: 'FALSE'
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+      restartPolicy: Never
+  backoffLimit: 4

@@ -19,8 +19,10 @@ def gpu():
 
 def main():
 
-    print("Sleep ...")
-    time.sleep(6000)
+    debug = os.getenv('DEBUG')
+    if debug == 'TRUE':
+        print("Sleep ...")
+        time.sleep(6000)
     
     device_name = tf.test.gpu_device_name()
     if device_name != '/device:GPU:0':
@@ -33,7 +35,7 @@ def main():
     
     cpu_time_list = []
     gpu_time_list = []
-    for x in range(5):
+    for x in range(10):
         cpu_time = timeit.timeit('cpu()', number=10, setup="from __main__ import cpu")
         cpu_time_list.append(cpu_time)
         gpu_time = timeit.timeit('gpu()', number=10, setup="from __main__ import gpu")

@@ -1,0 +1,16 @@
+#!/bin/bash
+echo "Before assembling..."
+
+# Workaround for CUDA 10.2 and Tesnorflow 2.2.0
+ln -s /usr/local/cuda/lib64/libcudart.so.10.2 /opt/app-root/lib64/libcudart.so.10.1
+
+/usr/libexec/s2i/assemble
+rc=$?
+
+if [ $rc -eq 0 ]; then
+    echo "After successful assembling"
+else
+    echo "After failed assembling"
+fi
+
+exit $rc
