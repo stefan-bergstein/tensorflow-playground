@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: tf-gpu-test-job
-        image: tf-gpu-test-job:latest
+        image: tf-gpu-test-is:latest
         imagePullPolicy: Always
         env:
         # Workaround for CUDA 10.2 and Tesnorflow 2.2.0

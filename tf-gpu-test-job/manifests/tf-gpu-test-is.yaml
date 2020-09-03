@@ -3,7 +3,7 @@ apiVersion: v1
 metadata:
   name: tf-gpu-test-is
   labels:
-    component: tf-gpu-test-is
+    component: tf-gpu-test-job
 spec:
   lookupPolicy:
     local: true

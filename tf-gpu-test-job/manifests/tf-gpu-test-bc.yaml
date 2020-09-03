@@ -14,7 +14,7 @@ spec:
   output:
     to:
       kind: ImageStreamTag
-      name: tf-gpu-test-job:latest
+      name: tf-gpu-test-is:latest
   postCommit: {}
   resources: {}
   runPolicy: Serial
