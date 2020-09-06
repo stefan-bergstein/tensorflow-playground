@@ -1,5 +1,5 @@
 # Tensorflow GPU Test Job
-Run a simple K8S Jab for GPU testing.
+Run a simple K8S Job for GPU testing.
 
 ## Prerequisites - before you start
 
@@ -14,7 +14,7 @@ oc process -f https://raw.githubusercontent.com/harshad16/cuda/master/cuda.yaml 
 ```
 
 # Build and Run Test Job
-oc apply -f manifests
+oc apply -k manifests
 
 
 ## Successfull result
