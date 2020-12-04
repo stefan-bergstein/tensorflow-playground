@@ -28,7 +28,7 @@ spec:
     sourceStrategy:
       from:
         kind: ImageStreamTag
-        name: cuda:10.2-s2i-base-rhel7-cuda
+        name: cuda:10.2-cudnn7-devel-ubi7
         # No Cuda build
         # namespace: openshift 
         # name: 'python:3.6'
