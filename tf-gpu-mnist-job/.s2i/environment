@@ -1,2 +1,0 @@
-XDG_CACHE_HOME=/opt/app-root/src/.cache
-APP_FILE=mnist_convnet.py

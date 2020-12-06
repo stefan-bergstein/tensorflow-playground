@@ -2,39 +2,25 @@ apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
   labels:
-    app: tf-gpu-mnist-job  
-    app.kubernetes.io/component: tf-gpu-mnist-job
-    app.kubernetes.io/instance: tf-gpu-mnist-job
-    app.kubernetes.io/name: python
-    app.openshift.io/runtime: python
-    app.openshift.io/runtime-version: "3.6"
-  name: tf-gpu-mnist-bc
+    app: tf-gpu-mnist-job
+  name: tf-gpu-mnist-job
 spec:
-  failedBuildsHistoryLimit: 3
-  output:
-    to:
-      kind: ImageStreamTag
-      name: tf-gpu-mnist-is:latest
-  postCommit: {}
-  resources: {}
-  runPolicy: Serial
+  strategy:
+    dockerStrategy:
+      dockerfilePath: build.Dockerfile
+    type: Docker
   source:
     contextDir: tf-gpu-mnist-job
     git:
       uri: https://github.com/stefan-bergstein/tensorflow-playground
     type: Git
-  strategy:
-    type: Source
-    sourceStrategy:
-      from:
-        kind: ImageStreamTag
-        name: cuda:10.2-s2i-base-rhel7-cuda
-        # No Cuda build
-        # namespace: openshift 
-        # name: 'python:3.6'
-      env:
-        - name: UPGRADE_PIP_TO_LATEST
-          value: 'true'
+  output:
+    to:
+      kind: ImageStreamTag
+      name: tf-gpu-mnist:latest
+  runPolicy: Serial
   triggers:
   - type: ConfigChange
   successfulBuildsHistoryLimit: 3
+  postCommit: {}
+  resources: {}
