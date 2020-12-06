@@ -7,14 +7,9 @@ spec:
     spec:
       containers:
       - name: tf-gpu-mnist-job
-        image: tf-gpu-mnist-is:latest
+        # image: image-registry.openshift-image-registry.svc:5000/sbergste-cuda/tf-gpu-mnist:latest
+        image: tf-gpu-mnist:latest
         imagePullPolicy: Always
-        env:
-        # Workaround for CUDA 10.2 and Tesnorflow 2.2.0
-        - name: LD_LIBRARY_PATH
-          value: $LD_LIBRARY_PATH:/opt/app-root/lib64
-        - name: DEBUG
-          value: 'FALSE'
         resources:
           limits:
             nvidia.com/gpu: 1

@@ -1,7 +1,7 @@
 kind: ImageStream
 apiVersion: v1
 metadata:
-  name: tf-gpu-mnist-is
+  name: tf-gpu-mnist
   labels:
     component: tf-gpu-mnist-job
 spec:
