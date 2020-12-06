@@ -1,0 +1,9 @@
+kind: ImageStream
+apiVersion: v1
+metadata:
+  name: tf-gpu-mnist-is
+  labels:
+    component: tf-gpu-mnist-job
+spec:
+  lookupPolicy:
+    local: true

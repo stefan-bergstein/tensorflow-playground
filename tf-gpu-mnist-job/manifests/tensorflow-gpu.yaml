@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tensorflow-gpu
+
+spec:
+  restartPolicy: Never
+  containers:
+  - name: tensorflow
+    args:
+    - sleep
+    - "100000"
+    image: tensorflow/tensorflow:latest-gpu
+    imagePullPolicy: Always
+    resources:
+      requests:
+        nvidia.com/gpu: 1
+      limits:
+        nvidia.com/gpu: 1

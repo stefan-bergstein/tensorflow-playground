@@ -22,16 +22,18 @@ spec:
     contextDir: tf-gpu-mnist-job
     git:
       uri: https://github.com/stefan-bergstein/tensorflow-playground
+      ref: "odh-images"
     type: Git
   strategy:
     type: Source
     sourceStrategy:
       from:
         kind: ImageStreamTag
-        name: cuda:10.2-cudnn7-devel-ubi7
-        # No Cuda build
-        # namespace: openshift 
-        # name: 'python:3.6'
+#        namespace: openshift
+        name: 'cuda:latest'
+
+#        kind: ImageStreamTag
+#        name: cuda:10.2-base-ubi7
       env:
         - name: UPGRADE_PIP_TO_LATEST
           value: 'true'
