@@ -8,46 +8,107 @@ This scenario is just for showcasing K8S jobs with Tensorflow
 - GPU enabled OCP
 - Free GPU resources
 - Clone this repo
-- Cuda S2I build image
 
-### Build Cuda S2I build image
+# Prep
 
+## Clone this repo
+
+```
+git clone https://github.com/stefan-bergstein/tensorflow-playground.git
+cd tensorflow-playground/tf-gpu-mnist-job
+```
+
+## Create a namespace 
 ```
 oc new-project gpu-mnist-jobs
-oc process -f https://raw.githubusercontent.com/harshad16/cuda/master/cuda.yaml CUDA_VERSION=10.2 SOURCE_REPOSITORY=https://github.com/harshad16/cuda.git | oc apply -f -
 ```
 
-Note, several images are built. It will take some time.
+## Check the availability of the GPU
+
+Start a pod that runs the nvidia-smi CLI
+
 ```
-oc get builds
+oc apply -f manifests/gpu-container.yaml
 ...
-NAME                         TYPE     FROM          STATUS     STARTED          DURATION
-10.2-rhel7-base-1            Docker   Git@4450352   Complete   13 minutes ago   1m9s
-10.2-rhel7-runtime-1         Docker   Git@4450352   Complete   11 minutes ago   2m5s
-10.2-rhel7-devel-1           Docker   Git@4450352   Complete   9 minutes ago    2m57s
-10.2-rhel7-cudnn7-devel-1    Docker   Git@4450352   Complete   6 minutes ago    2m24s
-10.2-s2i-base-rhel7-cuda-1   Docker   Git@12e5227   Complete   4 minutes ago    3m59s
+pod/check-gpu created
+```
+Inspect the logs:
+
+```
+oc logs check-gpu
+```
+
+Expected output:
+```
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 450.80.02    Driver Version: 450.80.02    CUDA Version: 11.0     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  Tesla K20Xm         On   | 00000000:00:08.0 Off |                    0 |
+| N/A   30C    P8    17W / 235W |      0MiB /  5700MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+
+```
+
+## Validate Tensorflow GPU images 
+
+Start a Tensorflow pod that uses an GPU 
+```
+oc apply -f manifests/tensorflow-gpu-test.yaml
+```
+Inspect the logs:
+```
+oc logs tensorflow-gpu
+```
+
+Expected output:
+```
+...
+2020-12-06 17:58:02.288129: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1402] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 5225 MB memory) -> physical GPU (device: ..
+TEST: tf.Tensor(-457.37344, shape=(), dtype=float32)
 ```
 
 # Build and Run Test Job
 ```
-cd tensorflow-playground/tf-gpu-mnist-job
 oc apply -k manifests
+...
+
+job.batch/tf-gpu-mnist-job-0 created
+buildconfig.build.openshift.io/tf-gpu-mnist-job created
+imagestream.image.openshift.io/tf-gpu-mnist created
 ```
 
 Watch the build:
 ```
-oc logs -f bc/tf-gpu-mnist-bc
+
+oc logs -f bc/tf-gpu-mnist-job
 ...
+Storing signatures
+Successfully pushed image-registry.openshift-image-registry.svc:5000/gpu-mnist-jobs/tf-gpu-mnist@sha256:...
 Push successful
 ```
 
 ## Check the MNIST traininf job outout
 
-You might have devel the pod ```tf-gpu-mnist-job-0``` in case you run into a ```ImagePullBackoff```.
-
+You might have to delete the pod ```tf-gpu-mnist-job-0``` in case you run into a ```ImagePullBackoff```.
 ```
-oc logs -l job-name=tf-gpu-mnist-job-0 --tail=-1
+oc delete pod -l job-name=tf-gpu-mnist-job-0
+```
+
+Watch the TF job:
+```
+oc logs -l job-name=tf-gpu-mnist-job-0 --follow
 
 ...
 -> physical GPU (device: 0, name: Tesla K20Xm, pci bus id: 0000:03:00.0, compute capability: 3.5)

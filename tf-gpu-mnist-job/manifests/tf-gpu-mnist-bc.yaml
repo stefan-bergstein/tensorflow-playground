@@ -12,7 +12,6 @@ spec:
   source:
     contextDir: tf-gpu-mnist-job
     git:
-      ref: odh-images
       uri: https://github.com/stefan-bergstein/tensorflow-playground
     type: Git
   output:
