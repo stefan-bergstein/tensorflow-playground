@@ -7,16 +7,12 @@ spec:
     spec:
       containers:
       - name: tf-gpu-test-job
-        image: tf-gpu-test-is:latest
+        image: tf-gpu-test:latest
         imagePullPolicy: Always
-        env:
-        # Workaround for CUDA 10.2 and Tesnorflow 2.2.0
-        - name: LD_LIBRARY_PATH
-          value: $LD_LIBRARY_PATH:/opt/app-root/lib64
-        - name: DEBUG
-          value: 'FALSE'
         resources:
           limits:
             nvidia.com/gpu: 1
+          requests:
+            nvidia.com/gpu: 1
       restartPolicy: Never
-  backoffLimit: 4
+  backoffLimit: 4  

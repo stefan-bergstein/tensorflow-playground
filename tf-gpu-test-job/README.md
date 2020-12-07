@@ -41,7 +41,7 @@ oc apply -f manifests/tf-gpu-test-job.yaml
 
 Successfull result:
 ```
-oc logs -l job-name=tf-gpu-test-job
+oc logs -l job-name=tf-gpu-test-job-0
 
 0 - CPU:  1.10, GPU:  0.16, Factor:6
 1 - CPU:  1.08, GPU:  0.15, Factor:7

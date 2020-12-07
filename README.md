@@ -1,7 +1,9 @@
 # tensorflow-playground
 
-
-
+- [Play with Tensorflow GPU Dummy K8S Jobs](tf-gpu-test-job/README.md)
+- [Play with Tensorflow GPU MNIST K8S Jobs](tf-gpu-mnist-job/README.md)
+- [Check GPUs](#check-gpus)
+- [Who has the GPUs?](#who-has-the-gpus)
 
 ## Check GPUs
 
