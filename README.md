@@ -173,7 +173,7 @@ Allocated resources:
 ```
 
 
-##  Who has the GPUd
+##  Who has the GPUs?
 
 ```
 oc get pods -A -o jsonpath="{range .items[*]}{@.metadata.namespace}{'\t'}{@.metadata.name}{'\t'}{@.spec.containers[*].resources.requests}{'\t'}{@.status.phase}{'\n'}" | grep nvidia.com/gpu

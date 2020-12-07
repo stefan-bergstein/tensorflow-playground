@@ -7,17 +7,39 @@ Run a simple K8S Job for GPU testing.
 - Free GPU resources
 - Cuda S2I build image
 
-### Build Cuda S2I build image
+
+# Prep
+
+## Clone this repo
 
 ```
-oc process -f https://raw.githubusercontent.com/harshad16/cuda/master/cuda.yaml CUDA_VERSION=10.2 SOURCE_REPOSITORY=https://github.com/harshad16/cuda.git | oc apply -f -
+git clone https://github.com/stefan-bergstein/tensorflow-playground.git
+cd tensorflow-playground/tf-gpu-test-job
 ```
+
+## Create a namespace 
+```
+oc new-project gpu-mnist-jobs
+```
+
 
 # Build and Run Test Job
-oc apply -k manifests
+
+## Build ...
+```
+oc apply -f manifests/tf-gpu-test-is.yaml
+oc apply -f manifests/tf-gpu-test-bc.yaml
+```
 
 
-## Successfull result
+## Run ..
+```
+oc apply -f manifests/tf-gpu-test-job.yaml
+
+```
+
+
+Successfull result:
 ```
 oc logs -l job-name=tf-gpu-test-job
 

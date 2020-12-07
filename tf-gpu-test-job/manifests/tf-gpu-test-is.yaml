@@ -1,7 +1,7 @@
 kind: ImageStream
 apiVersion: v1
 metadata:
-  name: tf-gpu-test-is
+  name: tf-gpu-test
   labels:
     component: tf-gpu-test-job
 spec:
