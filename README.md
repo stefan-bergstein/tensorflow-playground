@@ -14,52 +14,41 @@ Check the availability of GPUs before you start
 Check pods in ```gpu-operator-resources``` namespace:
 
 ```
-oc get pods -n gpu-operator-resources
+oc get pods -n nvidia-gpu-operator
+
 
 ## Expected output:
-NAME                                       READY   STATUS      RESTARTS   AGE
-gpu-operator-59847dc475-8tck7              1/1     Running     0          6d3h
-nfd-master-gmwlz                           1/1     Running     0          8d
-nfd-master-qcj9k                           1/1     Running     0          8d
-nfd-master-tcl8r                           1/1     Running     0          8d
-nfd-operator-9946ddc57-cx4nj               1/1     Running     0          8d
-nfd-worker-cmlsb                           1/1     Running     5          8d
-nvidia-container-toolkit-daemonset-8qc2l   1/1     Running     0          8d
-nvidia-dcgm-exporter-bskqk                 1/1     Running     3          8d
-nvidia-device-plugin-daemonset-ng2zg       1/1     Running     0          6d2h
-nvidia-device-plugin-validation            0/1     Completed   0          6d2h
-nvidia-driver-daemonset-c8h5w              1/1     Running     0          8d
-nvidia-driver-validation                   0/1     Completed   0          6d2h
+
+NAME                                                  READY   STATUS      RESTARTS   AGE
+gpu-feature-discovery-28qwf                           1/1     Running     0          70m
+gpu-operator-6bf6cd9cd-lts2d                          1/1     Running     9          21d
+nvidia-container-toolkit-daemonset-7ksc9              1/1     Running     0          70m
+nvidia-cuda-validator-b46tj                           0/1     Completed   0          69m
+nvidia-dcgm-272jj                                     1/1     Running     0          70m
+nvidia-dcgm-exporter-bf9w7                            1/1     Running     0          70m
+nvidia-device-plugin-daemonset-w8ktl                  1/1     Running     0          70m
+nvidia-device-plugin-validator-qmmc5                  0/1     Completed   0          68m
+nvidia-driver-daemonset-412.86.202304070758-0-9dfzz   2/2     Running     2          14h
+nvidia-node-status-exporter-r9259                     1/1     Running     1          14h
+nvidia-operator-validator-mb647                       1/1     Running     0          70m
 ```
 
 Have a look at the driver and plugin validation:
 
 
 ```
-oc logs nvidia-driver-validation -n gpu-operator-resources
+oc logs nvidia-device-plugin-validator-qmmc5 -n nvidia-gpu-operator
 
 ## Expected output:
-> Using CUDA Device [0]: Tesla K20Xm
-> GPU Device has SM 3.5 compute capability
-[Vector addition of 50000 elements]
-Copy input data from the host memory to the CUDA device
-CUDA kernel launch with 196 blocks of 256 threads
-Copy output data from the CUDA device to the host memory
-Test PASSED
-Done
-```
-```
-oc logs nvidia-device-plugin-validation -n gpu-operator-resources
+device-plugin workload validation is successful
+
+oc logs nvidia-cuda-validator-b46tj  -n nvidia-gpu-operator
 
 ## Expected output:
-> Using CUDA Device [0]: Tesla K20Xm
-> GPU Devicegpu-mnist-jobs below:
+cuda workload validation is successful
 
-launch with 196 blocks of 256 threads
-Copy output data from the CUDA device to the host memory
-Test PASSED
-Done
 ```
+
 
 ### View GPU utilization
 
